@@ -98,7 +98,6 @@ dmypy.json
 *.onnx
 *.pkl
 *.joblib
-models/
 .cache/
 .transformers_cache/
 .huggingface/
