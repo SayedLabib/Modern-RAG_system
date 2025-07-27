@@ -1,0 +1,126 @@
+## First I need to ingest and preprocess the data since it's a multilingual Bangla and English chat system rag
+    
+      1. Collect the data set which will be a PDF document of a Bangla book. And, pre-processed the data like  
+
+## Then, cleaning the dataset before chunking and embeddings.
+
+## Using Libraries like LnagChain or, LlamaIndex to break the document s into manageable, meaningful pieces for
+   context  preservation and optimal retrieval. 
+
+## Consider various chunking strategies. like -  fixed size, semantic and recursive
+
+## Now, Coming to the embeddings Transform the chunks into vector Embeddings like dense vector - 
+     
+     1. paraphrase-multilingual-MiniLM-L12-v2, text embedding ada002 or Llama text embedded V2
+
+## Now, we need to store the vectors in specialized vector databases like - 
+
+     1. Pinecone, ChromaDb, I will use Qdrant databases for industry based product evaluation
+
+
+## Now, Retrieved relevant information using dense vector search like (similarity search), sparse retrieval(BM25, SPLADE)
+   or, sophisticated hybrid fusion methods like (RRF, reciprocal rank fusion) via frameworks like langchain, Llamaindex or Hyastack
+   implement a re-ranking(using bge re-ranker or, cohere Rerank) for improved precision.
+
+## Coming to the Orchestration process use frameworks like langchain or Llama index whatever is preferred.
+
+## Now, selecting the LLM models I will use meta-llama-scout-17b-instruct model or Mistral-Saba model 
+   from Groq_Cloud. I will use this LLM's for generation.
+
+
+## I will create API endpoints for the RAG using FastAPI frameworks. will use docker container images for dockerization then, 
+   use nginx.conf for load balancing. 
+   
+
+
+
+
+🔚 Final Recommended Stack Summary
+Component	Tool / Tech	Notes
+Chunking	LangChain’s RecursiveCharacterTextSplitter	Best for Bangla + English mixed text
+Embeddings	paraphrase-multilingual-MiniLM-L12-v2	Local, multilingual, high quality
+Vector DB	Qdrant	Fast, hybrid-ready, local/deployable
+LLM	meta-llama-scout-17b-instruct (via Groq Cloud)	Best generation quality
+Orchestration	LangChain / LlamaIndex	LangChain better for flexibility
+Frontend	Chainlit	Clean chat interface only
+Backend	FastAPI + Docker	Expose POST /query endpoint
+Infra	Docker + optional NGINX	Simple, scalable
+
+
+multilingual-rag/
+│
+├── 📁 data/                          # Raw and processed PDF/text data
+│   └── bangla_book.pdf              # Your source document
+│
+├── 📁 embeddings/                   # Embedding-related utilities
+│   └── embedder.py                  # Embedding model loader (MiniLM)
+│
+├── 📁 chunking/                     # Text chunking logic
+│   └── chunker.py                   # Recursive chunking using LangChain
+│
+├── 📁 vectorstore/                  # Vector DB (Qdrant) setup & operations
+│   └── qdrant_client.py             # Qdrant init and upload vectors
+│
+├── 📁 retrieval/                    # Retrieval & reranking logic
+│   └── retriever.py                 # Hybrid + dense retrieval using LangChain
+│
+├── 📁 llm/                          # LLM generation logic (Groq API)
+│   └── generator.py                 # Query final prompt + call Groq model
+│
+├── 📁 api/                          # FastAPI endpoints
+│   ├── routes.py                    # `/query` endpoint handler
+│   └── schemas.py                   # Pydantic request/response models
+│
+├── 📁 core/                         # Configuration and pipeline wiring
+│   └── config.py                    # API keys, paths, model config
+│   └── pipeline.py                  # Orchestrates chunk → embed → retrieve → generate
+│
+├── 📁 chatlit_ui/                   # Chatlit frontend app
+│   └── app.py                       # Interface for user Q&A
+│
+├── main.py                          # FastAPI entrypoint
+├── requirements.txt                 # Dependencies
+├── Dockerfile                       # Docker setup
+├── nginx.conf                       # Optional load balancing config
+└── README.md    
+
+
+
+# Environment Configuration for Multilingual RAG System
+
+# Application Settings
+APP_NAME=Multilingual RAG System
+APP_VERSION=1.0.0
+DEBUG=true
+
+# API Configuration
+API_HOST=0.0.0.0
+API_PORT=8000
+
+# Qdrant Configuration
+QDRANT_HOST=localhost
+QDRANT_PORT=6333
+QDRANT_COLLECTION_NAME=multilingual_knowledge_base
+QDRANT_VECTOR_SIZE=384
+
+# Embedding Model Configuration
+EMBEDDING_MODEL_NAME=paraphrase-multilingual-MiniLM-L12-v2
+EMBEDDING_DEVICE=cpu
+
+# LLM Configuration (Groq)
+# Get your API key from: https://console.groq.com/keys
+GROQ_API_KEY=
+GROQ_MODEL=moonshotai/kimi-k2-instruct
+GROQ_TEMPERATURE=0.7
+GROQ_MAX_TOKENS=2048
+
+# Retrieval Configuration
+DEFAULT_TOP_K=5
+SIMILARITY_THRESHOLD=0.6
+MAX_CHUNK_LENGTH=800
+CHUNK_OVERLAP=100
+
+# Data Paths
+DATA_DIR=app/data
+PROCESSED_CHUNKS_FILE=processed_chunks.txt
+BANGLA_BOOK_FILE=Bangla_cleaned_book.txt

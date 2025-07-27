@@ -1,0 +1,45 @@
+# Core FastAPI and web framework
+fastapi
+uvicorn[standard]
+pydantic
+pydantic-settings
+
+# HTTP client for REST API calls
+requests
+
+# Vector Database
+qdrant-client
+
+# Embedding and ML models
+sentence-transformers
+transformers
+torch
+numpy
+
+# LLM API client
+groq
+
+#
+bnltk
+
+# Text processing and chunking
+langchain
+langchain-core
+langchain-community
+
+# PDF processing dependencies
+PyPDF2
+
+# Text processing dependencies
+unicodedata2
+
+# Utility libraries
+python-dotenv
+requests
+
+# Data processing
+pandas
+
+# Additional dependencies
+python-multipart
+typing-extensions

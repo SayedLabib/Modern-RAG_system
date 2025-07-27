@@ -1,0 +1,141 @@
+services:
+  # Qdrant Vector Database
+  qdrant:
+    image: qdrant/qdrant:v1.7.3
+    container_name: qdrant-db
+    ports:
+      - "6333:6333"
+      - "6334:6334"
+    volumes:
+      - qdrant_data:/qdrant/storage
+    environment:
+      - QDRANT__SERVICE__HTTP_PORT=6333
+      - QDRANT__SERVICE__GRPC_PORT=6334
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:6333/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+    restart: unless-stopped
+    networks:
+      - rag-network
+
+  # Bangla RAG Application
+  rag-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: bangla-rag-app
+    ports:
+      - "8076:8076"
+    environment:
+      # Application Configuration
+      - APP_NAME=Bangla RAG System
+      - APP_VERSION=1.0.0
+      - DEBUG=false
+      
+      # Qdrant Configuration
+      - QDRANT_HOST=qdrant
+      - QDRANT_PORT=6333
+      - QDRANT_COLLECTION_NAME=bangla_knowledge_base
+      
+      # Embedding Configuration
+      - EMBEDDING_MODEL_NAME=paraphrase-multilingual-MiniLM-L12-v2
+      - EMBEDDING_DEVICE=cpu
+      - EMBEDDING_CACHE_DIR=/app/.cache
+      
+      # LLM Configuration (Add your Groq API key)
+      - GROQ_API_KEY=${GROQ_API_KEY:-your_groq_api_key_here}
+      - LLM_MODEL_NAME=meta-llama/llama-4-scout-17b-16e-instruct
+      - LLM_TEMPERATURE=0.7
+      - LLM_MAX_TOKENS=1024
+      
+      # RAG Configuration
+      - CONVERSATION_CONTEXT_LIMIT=3
+      - DEFAULT_TOP_K=5
+      - SIMILARITY_THRESHOLD=0.6
+      
+      # Data Configuration
+      - DATA_DIR=/app/data
+      - BANGLA_BOOK_FILE=Bangla_cleaned_book.txt
+      
+      # Logging
+      - LOG_LEVEL=INFO
+      - PYTHONPATH=/app
+    volumes:
+      - app_cache:/app/.cache
+      - app_logs:/app/logs
+    depends_on:
+      qdrant:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8076/api/v1/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 60s
+    restart: unless-stopped
+    networks:
+      - rag-network
+
+  # Nginx Load Balancer
+  nginx:
+    image: nginx:1.24-alpine
+    container_name: rag-nginx
+    ports:
+      - "80:80"
+      - "8080:8080"  # Health check port
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - nginx_logs:/var/log/nginx
+    depends_on:
+      rag-app:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/nginx-health"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - rag-network
+
+  # Redis Cache (Optional - for future caching needs)
+  redis:
+    image: redis:7-alpine
+    container_name: rag-redis
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    command: redis-server --appendonly yes --maxmemory 256mb --maxmemory-policy allkeys-lru
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+    networks:
+      - rag-network
+
+# Volumes for persistent data
+volumes:
+  qdrant_data:
+    driver: local
+  app_cache:
+    driver: local
+  app_logs:
+    driver: local
+  nginx_logs:
+    driver: local
+  redis_data:
+    driver: local
+
+# Network for service communication
+networks:
+  rag-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.20.0.0/16

@@ -1,0 +1,256 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# PyInstaller
+*.manifest
+*.spec
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.nox/
+.coverage
+.coverage.*
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+.pytest_cache/
+
+# Virtual environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+# PyCharm
+.idea/
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# IPython
+profile_default/
+ipython_config.py
+
+# Environments
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Spyder
+.spyderproject
+.spyproject
+
+# Rope
+.ropeproject
+
+# mkdocs documentation
+/site
+
+# mypy
+.mypy_cache/
+.dmypy.json
+dmypy.json
+
+# Pyre type checker
+.pyre/
+
+# Machine Learning / AI Models
+*.bin
+*.safetensors
+*.onnx
+*.pkl
+*.joblib
+models/
+.cache/
+.transformers_cache/
+.huggingface/
+
+# Logs
+*.log
+logs/
+rag_system.log
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+
+# Vector database data
+qdrant_data/
+vector_store/
+
+# Docker
+.dockerignore
+
+# OS specific
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Windows
+*.tmp
+*.temp
+Desktop.ini
+$RECYCLE.BIN/
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# Temporary files
+*.swp
+*.swo
+*~
+
+# IDE
+*.sublime-project
+*.sublime-workspace
+
+# Data files (keep structure but ignore large files)
+*.pdf
+*.txt.bak
+*.csv.bak
+processed_chunks_backup.txt
+
+# API Keys and sensitive files
+.env
+*.key
+*.pem
+*.crt
+secrets/
+
+# Cache directories
+__pycache__/
+.cache/
+*.cache
+.pytest_cache/
+.mypy_cache/
+
+# Build outputs
+build/
+dist/
+*.egg-info/
+
+# Documentation builds
+docs/_build/
+docs/build/
+
+# Backup files
+*.bak
+*.backup
+*.old
+
+# Archive files
+*.zip
+*.tar.gz
+*.rar
+*.7z
+
+# Large model files
+*.model
+*.pt
+*.pth
+*.h5
+*.hdf5
+
+# Notebook checkpoints
+.ipynb_checkpoints/
+
+# FastAPI
+.pytest_cache/
+
+# Redis dump
+dump.rdb
+
+# Node.js (if any frontend is added later)
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Docker volumes data
+qdrant_data/
+app_cache/
+app_logs/
+nginx_logs/
+redis_data/
+
+# Evaluation results
+evaluation_results/
+benchmarks/
+
+# Experiment tracking
+mlruns/
+wandb/
+tensorboard_logs/
+
+# Profiling
+*.prof
+
+# Coverage reports
+htmlcov/
+.coverage
+
+# Local configuration overrides
+config.local.py
+settings.local.py
+
+# Development scripts
+dev_scripts/
+experiments/
+
+# Temporary development files
+temp/
+tmp/
+scratch/
+
+# Always ignore Python cache and environment files
+__pycache__/
+**/__pycache__/
+.env
+.env.*
